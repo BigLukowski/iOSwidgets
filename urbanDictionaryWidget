@@ -1,0 +1,26 @@
+let baseURL = "https://api.airtable.com/v0/REPLACEWITHYOURS/Quotes?maxRecords=100&view=Grid%20view"    
+let r = new Request(baseURL);
+r.headers = { 'Authorization': 'Bearer REPLACEWITHYOURS'};
+let json = await r.loadJSON(); 
+let quotes = json['records'];
+let randomQuote = (quotes[Math.floor(Math.random()*quotes.length)]);
+let quoteText = randomQuote['fields']['Quote'];
+let quoteAuthor = randomQuote['fields']['Author'];
+
+
+let widget = createWidget();
+
+if (config.runsInWidget) {
+    let widget = createWidget();
+    Script.setWidget(widget);
+    Script.complete();
+}
+
+function createWidget() {
+    let w = new ListWidget();
+    let widgetText = w.addText(quoteText);
+    widgetText.textSize = 15;
+    let widgetSubText = w.addText(quoteAuthor);
+    widgetText.textSize = 13;    
+    return w
+}
